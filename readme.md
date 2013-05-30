@@ -3,7 +3,7 @@
 
 Esse documento é feito para leitores que conhecem um pouco das seguintes coisas:
 
-- uma linguagem de script semelhantes ao Javascript, Ruby, Python, Perl e outras. Se você esta começãndo com programação, uma leitura mais tranquila seria o [JavaScript for Cats](http://jsforcats.com/). :cat2:
+- uma linguagem de script semelhante ao Javascript, Ruby, Python, Perl e outras. Se você esta começãndo com programação, uma leitura mais tranquila seria o [JavaScript for Cats](http://jsforcats.com/). :cat2:
 
 - git e o github. Eles são ferramentas de colaboração com código aberto e as pessoas na comunidade do node utilizão os mesmos para compartilhar modulos. Você só precisa saber o basico. Aqui tem três execelentes tuturiais de introdução: [1](http://skli.se/2012/09/22/introduction-to-git/), [2](http://zachbruggeman.me/github-for-cats/), [3](http://opensourcerer.diy.org/)
 
@@ -16,11 +16,11 @@ Esse pequeno livro é um trabalho em progresso, mas eu não tenho um trabalho ag
 - [Entendendo node](#understanding)
 - [Modulos do núcleo](#core-modules)
 - [Callbacks](#callbacks)
-- [Events](#events) (not written yet)
-- [Streams](#streams) (not written yet)
-- [Modulos e o NPM(Node Package Manager)](#modules) (not written yet)
+- [Events](#events) (não foi escrito ainda)
+- [Streams](#streams) (não foi escrito ainda)
+- [Modulos e o NPM(Node Package Manager)](#modules) (não foi escrito ainda)
 - [Evoluindo de forma granular](#going-with-the-grain)
-- [Apps em tempo-real](#realtime) (not written yet)
+- [Apps em tempo-real](#realtime) (não foi escrito ainda)
 
 ## Entendendo o node 
 
@@ -33,34 +33,38 @@ Quais são alguns exemplos de I/O? Bom... aqui tem um diagrama de uma aplicaçã
 
 If you don't understand all of the different things in the diagram it is completely okay. The point is to show that a single node process (the hexagon in the middle) can act as the broker between all of the different I/O endpoints (orange and purple represent I/O).
 
-Usually building these kinds of systems is either:
+Se você não entende todas as diferentes coisas que estão nesse diagrama, fique tranquilo. O ponto é, mostrar um unico nó de processo (o hexagono no meio) pode agir como o corretor entre todos os diferentes pontos finais de I/O (laranja e roxo representam I/O).
 
-- difficult to code but yields super fast results (like writing your web servers from scratch in C)
-- easy to code but not very speedy/robust (like when someone tries to upload a 5GB file and your server crashes)
+Normalmente na construção desses sistemas temas as seguintes situações:
 
-Node's goal is to strike a balance between these two: relatively easy to understand and use and fast enough for most use cases.
+- dificuldade de programar, mas tem um super rendimento com resultados rápidos (igual escrever servidores web do zero em C)
+- facil de programar mas não é o ideal em relação a velocidade/robustez (semelhando ao caso de tentar o upload de um arquivo de 5GB e o seu servidor quebrar)
 
-Node isn't either of the following:
+A meta do Node é acertar o balanço entre estes dois: relativamente simples de entender e usar rápido o suficiente para mais casos de uso.
 
-  - A web framework (like Rails or Django, though it can be used to make such things)
-  - A programming language (it uses JavaScript but node isn't its own language)
+Node não é o tanto dos seguintes itens:
+
+  - Um web framework (semelhante ao Rails ou Django, que são utilizadas para certos tipos de coisas)
+  - Uma linguagem de programação (ele use JavaScript mas o node não é uma linguagem)
   
 Instead, node is somewhere in the middle. It is:
+Em vez disso, node é em algum lugar no meio. Assim:
 
-  - Designed to be simple and therefore relatively easy to understand and use
-  - Useful for I/O based programs that need to be fast and/or handle lots of connections
+  - Projetado para ser simples e portanto relativamente simples de entender o uso
+  - Normalmente para I/O baseado em programas que precisam ser rápidos e/ou lidar com muitas conexões
   
-At a lower level, node can be described as a tool for writing two major types of programs: 
+No baixo nivel, node é descrito como uma ferramente para escrever os seguintes dois maiores tipos de programas:
 
-  - Network programs using the protocols of the web: HTTP, TCP, UDP, DNS and SSL
-  - Programs that read and write data to the filesystem or local processes/memory
+  - Programas de reder ustilzando protocolos como: HTTP, TCP, UDP, DNS e SSL
+  - Programas de leitura e escrita de dados para o arqivos do sistema ou processes/memôria local
 
 What is an "I/O based program"? Here are some common I/O sources:
+O que é um programa baseado em "I/O"? Aqui estão os pontos comuns do I/O nas fontes:
 
   - Databases (e.g. MySQL, PostgreSQL, MongoDB, Redis, CouchDB)
   - APIs (e.g. Twitter, Facebook, Apple Push Notifications)
   - HTTP/WebSocket connections (from users of a web app)
-  - Files (image resizer, video editor, internet radio)
+  - Arquivos (image resizer, editor de videos, rádio onlive)
 
 Node does I/O in a way that is [asynchronous](http://en.wikipedia.org/wiki/Asynchronous_I/O) which lets it handle lots of different things simultaneously. For example, if you go down to a fast food joint and order a cheeseburger they will immediately take your order and then make you wait around until the cheeseburger is ready. In the meantime they can take other orders and start cooking cheeseburgers for other people. Imagine if you had to wait at the register for your cheeseburger, blocking all other people in line from ordering while they cooked your burger! This is called **blocking I/O** because all I/O (cooking cheeseburgers) happens one at a time. Node, on the other hand, is **non-blocking**, which means it can cook many cheeseburgers at once.
 
