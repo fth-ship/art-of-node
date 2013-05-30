@@ -1,33 +1,35 @@
-# The Art of Node
-## An introduction to Node.js
+# A arte do Node 
+## Uma introdução ao Node.js
 
-This document is intended for readers who know at least a little bit of a couple of things:
+Esse documento é feito para leitores que conhecem um pouco das seguintes coisas:
 
-- a scripting language like JavaScript, Ruby, Python, Perl, etc. If you aren't a programmer yet then it is probably easier to start by reading [JavaScript for Cats](http://jsforcats.com/). :cat2:
-- git and github. These are the open source collaboration tools that people in the node community use to share modules. You just need to know the basics. Here are three great intro tutorials: [1](http://skli.se/2012/09/22/introduction-to-git/), [2](http://zachbruggeman.me/github-for-cats/), [3](http://opensourcerer.diy.org/)
+- uma linguagem de script semelhantes ao Javascript, Ruby, Python, Perl e outras. Se você esta começãndo com programação, uma leitura mais tranquila seria o [JavaScript for Cats](http://jsforcats.com/). :cat2:
 
-This short book is a work in progress + I don't have a job right now (if I did I wouldn't have the time to write this). If you like it then please consider donating via [gittip](https://www.gittip.com/maxogden/) so that I can write more!
+- git e o github. Eles são ferramentas de colaboração com código aberto e as pessoas na comunidade do node utilizão os mesmos para compartilhar modulos. Você só precisa saber o basico. Aqui tem três execelentes tuturiais de introdução: [1](http://skli.se/2012/09/22/introduction-to-git/), [2](http://zachbruggeman.me/github-for-cats/), [3](http://opensourcerer.diy.org/)
+
+Esse pequeno livro é um trabalho em progresso, mas eu não tenho um trabalho agora. ( Se eu estivesse, eu não teria tempo para escrever este ). Se você gostar dele, por favor considere uma doação via [gittip](https://www.gittip.com/maxogden/) então eu irei escrever mais!
 
 [![donate](donate.png)](https://www.gittip.com/maxogden/)
 
-## Table of contents
+## Indice de conteúdo 
 
-- [Understanding node](#understanding)
-- [Core modules](#core-modules)
+- [Entendendo node](#understanding)
+- [Modulos do núcleo](#core-modules)
 - [Callbacks](#callbacks)
 - [Events](#events) (not written yet)
 - [Streams](#streams) (not written yet)
-- [Modules and NPM](#modules) (not written yet)
-- [Going with the grain](#going-with-the-grain)
-- [Real-time apps](#realtime) (not written yet)
+- [Modulos e o NPM(Node Package Manager)](#modules) (not written yet)
+- [Evoluindo de forma granular](#going-with-the-grain)
+- [Apps em tempo-real](#realtime) (not written yet)
 
-## Understanding node
+## Entendendo o node 
 
-Node.js is an open source project designed to help you write JavaScript programs that talk to networks, file systems or other I/O (input/output, reading/writing) sources. That's it! It is just a simple and stable I/O platform that you are encouraged to build modules on top of.
+Node.js é um projeto de código aberto projetado para auxiliar na escrita de programas em JavaScript que conversem com redes, arquivos do sistema ou outro I/O (entrada/saida, leitura/escrita).
+É isso o que ele é. Ele é uma simples e estavel plataforma de I/O que encoraja você a escrever modulos para funcionar nele.
 
-What are some examples of I/O? Here is a diagram of an application that I made with node that shows many I/O sources:
+Quais são alguns exemplos de I/O? Bom... aqui tem um diagrama de uma aplicação que eu fiz com node e ela mostra varias fontes de I/O:
 
-![server diagram](server-diagram.png)
+![diagrama do servidor](server-diagram.png)
 
 If you don't understand all of the different things in the diagram it is completely okay. The point is to show that a single node process (the hexagon in the middle) can act as the broker between all of the different I/O endpoints (orange and purple represent I/O).
 
