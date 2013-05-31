@@ -58,54 +58,56 @@ No baixo nivel, node é descrito como uma ferramente para escrever os seguintes 
   - Programas de reder ustilzando protocolos como: HTTP, TCP, UDP, DNS e SSL
   - Programas de leitura e escrita de dados para o arqivos do sistema ou processes/memôria local
 
-What is an "I/O based program"? Here are some common I/O sources:
-O que é um programa baseado em "I/O"? Aqui estão os pontos comuns do I/O nas fontes:
+O que é um programa baseado em "I/O"? Aqui estão os pontos comuns do I/O:
 
-  - Databases (e.g. MySQL, PostgreSQL, MongoDB, Redis, CouchDB)
+  - Bancos de dados (e.g. MySQL, PostgreSQL, MongoDB, Redis, CouchDB)
   - APIs (e.g. Twitter, Facebook, Apple Push Notifications)
-  - HTTP/WebSocket connections (from users of a web app)
-  - Arquivos (image resizer, editor de videos, rádio onlive)
+  - Conexões HTTP/WebSocket (from users of a web app)
+  - Arquivos (redimensionamento de imagem, editor de videos, rádio online)
 
-Node does I/O in a way that is [asynchronous](http://en.wikipedia.org/wiki/Asynchronous_I/O) which lets it handle lots of different things simultaneously. For example, if you go down to a fast food joint and order a cheeseburger they will immediately take your order and then make you wait around until the cheeseburger is ready. In the meantime they can take other orders and start cooking cheeseburgers for other people. Imagine if you had to wait at the register for your cheeseburger, blocking all other people in line from ordering while they cooked your burger! This is called **blocking I/O** because all I/O (cooking cheeseburgers) happens one at a time. Node, on the other hand, is **non-blocking**, which means it can cook many cheeseburgers at once.
+Node faz o I/O de forma assíncrona [asynchronous](http://en.wikipedia.org/wiki/Asynchronous_I/O) para lidar com diferentes situações simultaneas. Por exemplo, se você vai até um fast food e faz o pedido de um cheesebuger você tem de imadiato o pedido feito mas não o lanche, então você espara ele ficar pronto para comer. Neste meio tempo outros pedidos estão sendo feitos na lanchonete para outras pessoas. Imagine que você tenha que esperar o registro do seu cheeseburger, bloqueando
+outras pessoas porque o seu pedido tem que ser feito para o deu outra começar enquanto preparam o seu. Isso é chamado de **I/O bloqueante** porque todo o I/O (cozinhar cheeseburgers) acontece um a um enfileirando tudo. O Node, por sua vez é **não-bloqueante**, significando que os pedidos seram feitos e entregues quando estiverem prontos.  
 
-Here are some fun things made easy with node thanks to its non-blocking nature:
+Aqui tem uma lista de coisas divertidas que podem serem feitas com graças ao node por sua natureza não bloqueante:
   
-  - Control [flying quadcopters](http://nodecopter.com)
-  - Write IRC chat bots
-  - Create [walking biped robots](http://www.youtube.com/watch?v=jf-cEB3U2UQ)
+  - Controle [flying quadcopters](http://nodecopter.com)
+  - Escrever bots par ao chat IRC
+  - Criar [walking biped robots](http://www.youtube.com/watch?v=jf-cEB3U2UQ)
 
-## Core modules
+## Módulos do Núcleo 
 
-Firstly I would recommend that you get node installed on your computer. The easiest way is to visit [nodejs.org](http://nodejs.org) and click `Install`. 
+Primeiro eu recomendo que uma versão do node esteja instalada no seu computador. Um modo fácil para que isso aconteça e visitando [nodejs.org](http://nodejs.org) e clique em `Install`.
 
-Node has a small core group of modules (commonly referred to as 'node core') that are presented as the public API that you are intended to write programs with. For working with file systems there is the `fs` module and for networks there are modules like `net` (TCP), `http`, `dgram` (UDP).
+Node tem um pequeno grupo de modulos que vem com ele por padrão (comumente chamados como 'núcleo do node') eles são representados por suas API's publicas e você utiliza elas para escrever os seu programas. Para trabalhar com arquivos do sistema existe o módulo `fs` e para redes os módulos são `net` (TCP), `http`, `dgram` (UDP).
 
-In addition to `fs` and network modules there are a number of other base modules in node core. There is a module for asynchronously resolving DNS queries called `dns`, a module for getting OS specific information like the tmpdir location called `os`, a module for allocating binary chunks of memory called `buffer`, some modules for parsing urls and paths (`url`, `querystring`, `path`), etc. Most if not all of the modules in node core are there to support nodes main use case: writing fast programs that talk to file systems or networks.
+Em adição ao `fs` e os módulos de rede existem outros modulos no base do núcleo do node. Lá também temos um modulo assincrono para resolver consultas de DNS chamado `dns`, um módulo para pegar informações especificas do sistema, por exemplo o tmpdir e ele se chama `os`, um outro para alocação de pedaços de binários na memória chamado `buffer`, varios módulos para análise de urls e caminhos (`url`, `querystring`, `path`) entre outros. A maioria dos módulos presentes no núcleo do node suportão
+os principais casos de uso dele: escrever rapidamente programas que conversem com os arquivos do sistema ou rede. 
 
-Node handles I/O with: callbacks, events, streams and modules. If you learn how these four things work then you will be able to go into any module in node core and have a basic understanding about how to interface with it.
+Node lida com I/O com: callbacks, eventos, streams e módulos. Se você aprende como essas quatro coisas trabalham vocês esta habil para ir em quanlquer módulo do core do node a ter um entendimento básico sobre como a interface funciona com ele.
 
 ## Callbacks
 
-This is the most important topic to understand if you want to understand how to use node. Nearly everything in node uses callbacks. They weren't invented by node, they are just a particularly useful way to use JavaScript functions.
+É um dos tópicos mais importantes para se entender se você tem que entender como usatilizar o node. Quase tudo no node usa callbacks. Eles não foram inventados para o node, somente tem um uso particular com funções do JavaScript.
 
-Callbacks are functions that are executed asynchronously, or at a later time. Instead of the code reading top to bottom procedurally, async programs may execute different functions at different times based on the order and speed that earlier functions like http requests or file system reads happen.
+Callbacks são funções que serão executadas de modo assincrono, ou posteriormente. Ao passo que o código for lido de cima para baixo de modo processual, programas assincronos 
+possivelmente executam funções em tempos diferentes baseado na ordem e velocidade em que requisições http ou no trabalho de arquivamento do sistema acontecem.
 
-The difference can be confusing since determining if a function is asynchronous or not depends a lot on context. Here is a simple synchronous example:
+A diferença pode ser confusa sendo determinada quando uma função é assincrona ou não depende da execução de um grande contexto. Seque um simples exemplo de código assincrono:
 
 ```js
 var myNumber = 1
-function addOne() { myNumber++ } // define the function
-addOne() // run the function
-console.log(myNumber) // logs out 2
+function addOne() { myNumber++ } // define a função 
+addOne() // executa a função
+console.log(myNumber) // mostra na saida padrão o numero 2
 ```
 
-The code here defines a function and then on the next line calls that function, without waiting for anything. When the function is called it immediately adds 1 to the number, so we can expect that after we call the function the number should be 2.
+O código acima define uma função e na linha seguinte chama essa função, sem esperar por nada. Onde ela é chamada imediatamente adicionando 1 a váriavel `myNumber`, então depois que a função foi chamada você espera que o numero seja 2 na váriavel `myNumber`.
 
-Let's suppose that we want to instead store our number in a file called `number.txt`:
+Supondo que precisamos armazenar nosso numero em um arquivo chamado `number.txt`:
 
 ```js
-var fs = require('fs') // require is a special function provided by node
-var myNumber = undefined // we dont know what the number is yet since it is stored in a file
+var fs = require('fs') // `require` é uma função especial do node para requisitar os módulos 
+var myNumber = undefined // não sabemos ainda qual valor esta armazenado no arquivo 
 
 function addOne() {
   fs.readFile('./number.txt', function doneReading(err, fileContents) {
@@ -116,18 +118,19 @@ function addOne() {
 
 addOne()
 
-console.log(myNumber) // logs out undefined
+console.log(myNumber) // mostra na saida padrão `undefined` 
 ```
 
-Why do we get `undefined` when we log out the number this time? In this code we use the `fs.readFile` method, which happens to be an asynchronous method. Usually things that have to talk to hard drives or networks will be asynchronous. If they just have to access things in memory or do some work on the CPU they will be synchronous. The reason for this is that I/O is reallyyy reallyyy sloowwww. A ballpark figure would be that talking to a hard drive is about 100,000 times slower than talking to memory (RAM).
+Porque é temos `undefined` quando pedimos para mostrar o numero dessa vez? Nesse código usamos o método `fs.readFile`, acontece de módo assincrono. Usualmente você tem que se comunicar com os discos rigidos ou redes bem de modo assincrono. Se for somente para acesso a memória ou fazer algo na CPU isso é feito bem de modo sincrono. A razão pela qual fazer o I/O assincrono. É porque o acesso ao disco é 100,000 vezes mais devagar do que comunicar-se com a memória (RAM).
 
-When we run this program all of the functions are immediately defined, but they don't all execute immediately. This is a fundamental thing to understand about async programming. When `addOne` is called it kicks off a `readFile` and then moves on to the next thing that is ready to execute. If there is nothing to execute node will either wait for pending fs/network operations to finish or it will stop running and exit to the command line.
+Onde você executa esse programa onde as funções são imediatamente definidas, mas não executa elas imediatamente. Este é um conceito fundamental para entender sobre a programação assincrona. Onde `addOne` é chamada fora de `fs.readFile` e move-se para a proxima tarefa pronta para ser executada e não esperar o disco responder igual a `fs.readFile`. Se não tem nada para executar o node espera por pendencias de operações fs/network terminarem ou pararem de executar saindo da linha de
+comando.
 
-When `readFile` is done reading the file (this may take anywhere from milliseconds to seconds to minutes depending on how fast the hard drive is) it will run the `doneReading` function and give it an error (if there was an error) and the file contents.
+Onde `fs.readFile` esta completa para ler o arquivo (talves isso demore millisegundos ou segundos e até mesmo minutos dependendo de quanto o disco é rápipdo) executando a função `doneReading` e dando um erro (claro que se algum tipo de erro acontecer) e o conteúdo do arquivo.
 
-The reason we got `undefined` above is that nowhere in our code exists logic that tells the `console.log` statement to wait until the `readFile` statement finishes before it prints out the number.
+A razão pela qual `undefined` foi mostrado no código acima é que ele é chamado dentro de `console.log` e fora de `fs.readFile` mostrando antes o valor de myNumber e não o conteúdo do arquivo.
 
-If you have some code that you want to be able to execute over and over again or at a later time the first step is to put that code inside a function. Then you can call the function whenever you want to run your code. It helps to give your functions descriptive names.
+Se você tem um pedaço de código que precisa ser executado varias e varias vezes ou um tempo depois, o primeiro passo é colocar esse pedaço de código dentro de uma função. Aonde você podera chamar sem precisar escrever ele em todas as partes que for necessario e nomeando da meneira que fique claro aquilo que esta sendo feito. Isso ajuda a dar nomes descritivos para as funções. 
 
 Callbacks are just functions that get executed at some later time. The key to understanding callbacks is to realize that they are used when you don't know **when** some async operation will complete, but you do know **where** the operation will complete — the last line of the async function! The top-to-bottom order that you declare callbacks does not necessarily matter, only the logical/hierarchical nesting of them. First you split your code up into functions, and then use callbacks to declare if one function depends on another function finishing.
 
