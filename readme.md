@@ -3,35 +3,33 @@
 
 Esse documento é feito para leitores que conhecem um pouco das seguintes coisas:
 
-- uma linguagem de script semelhante ao Javascript, Ruby, Python, Perl e outras. Se você esta começãndo com programação, uma leitura mais tranquila seria o [JavaScript for Cats](http://jsforcats.com/). :cat2:
+- uma linguagem de script semelhante ao Javascript, Ruby, Python, Perl e outras. Se você esta começando com programação, uma leitura mais tranquila seria o [JavaScript for Cats](http://jsforcats.com/). :cat2:
 
-- git e o github. Eles são ferramentas de colaboração com código aberto e as pessoas na comunidade do node utilizão os mesmos para compartilhar modulos. Você só precisa saber o basico. Aqui tem três execelentes tuturiais de introdução: [1](http://skli.se/2012/09/22/introduction-to-git/), [2](http://zachbruggeman.me/github-for-cats/), [3](http://opensourcerer.diy.org/)
+- git e o github. Eles são ferramentas de colaboração com código aberto e as pessoas na comunidade do node utilizão os mesmos para compartilhar módulos. Você só precisa saber o básico. Aqui tem três excelentes tutoriais de introdução: [1](http://skli.se/2012/09/22/introduction-to-git/), [2](http://zachbruggeman.me/github-for-cats/), [3](http://opensourcerer.diy.org/)
 
-Esse pequeno livro é um trabalho em progresso, mas eu não tenho um trabalho agora. ( Se eu estivesse, eu não teria tempo para escrever este ). Se você gostar dele, por favor considere uma doação via [gittip](https://www.gittip.com/maxogden/) então eu irei escrever mais!
+Esse pequeno livro é um trabalho em progresso, mas eu não tenho um trabalho agora. ( Se eu estivesse trabalhando, eu não teria tempo para escrever este gruia ). Se você gostar dele, por favor considere uma doação via [gittip](https://www.gittip.com/maxogden/) então eu irei escrever mais!
 
 [![donate](donate.png)](https://www.gittip.com/maxogden/)
 
-## Indice de conteúdo 
+## Índice analítico 
 
 - [Entendendo o node](#understanding)
-- [Modulos do núcleo](#core-modules)
+- [módulos do núcleo](#core-modules)
 - [Callbacks](#callbacks)
 - [Eventos](#events) (não foi escrito ainda)
 - [Streams](#streams) (não foi escrito ainda)
-- [Modulos e o NPM (Node Package Manager)](#modules) (não foi escrito ainda)
+- [Módulos e o NPM (Node Package Manager)](#modules) (não foi escrito ainda)
 - [Evoluíndo de forma granular](#going-with-the-grain)
 - [Apps em tempo-real](#realtime) (não foi escrito ainda)
 
 ## Entendendo o node 
 
-Node.js é um projeto de código aberto projetado para auxiliar na escrita de programas em JavaScript que conversem com redes, arquivos do sistema ou outro I/O (entrada/saida, leitura/escrita).
-É isso o que ele é. Ele é uma simples e estavel plataforma de I/O que encoraja você a escrever modulos para funcionar nele.
+Node.js é um projeto de código aberto projetado para auxiliar na escrita de programas em JavaScript que conversem com redes, sistema de arquivos ou outro I/O (entrada/saida, leitura/escrita).
+É isso o que ele é. Ele é uma simples e estável plataforma de I/O que encoraja você a escrever módulos para funcionar nele.
 
 Quais são alguns exemplos de I/O? Bom... aqui tem um diagrama de uma aplicação que eu fiz com node e ela mostra varias fontes de I/O:
 
 ![diagrama do servidor](server-diagram.png)
-
-If you don't understand all of the different things in the diagram it is completely okay. The point is to show that a single node process (the hexagon in the middle) can act as the broker between all of the different I/O endpoints (orange and purple represent I/O).
 
 Se você não entende todas as diferentes coisas que estão nesse diagrama, fique tranquilo. O ponto é, mostrar um unico nó de processo (o hexagono no meio) pode agir como o corretor entre todos os diferentes pontos finais de I/O (laranja e roxo representam I/O).
 
@@ -78,10 +76,10 @@ Aqui tem uma lista de coisas divertidas que podem serem feitas com graças ao no
 
 Primeiro eu recomendo que uma versão do node esteja instalada no seu computador. Um modo fácil para que isso aconteça e visitando [nodejs.org](http://nodejs.org) e clique em `Install`.
 
-Node tem um pequeno grupo de modulos que vem com ele por padrão (comumente chamados como 'núcleo do node') eles são representados por suas API's publicas e você utiliza elas para escrever os seu programas. Para trabalhar com arquivos do sistema existe o módulo `fs` e para redes os módulos são `net` (TCP), `http`, `dgram` (UDP).
+Node tem um pequeno grupo de módulos que vem com ele por padrão (comumente chamados como 'núcleo do node') eles são representados por suas API's publicas e você utiliza elas para escrever os seu programas. Para trabalhar com sistema de arquivos existe o módulo `fs` e para redes os módulos são `net` (TCP), `http`, `dgram` (UDP).
 
-Em adição ao `fs` e os módulos de rede existem outros modulos no base do núcleo do node. Lá também temos um modulo assincrono para resolver consultas de DNS chamado `dns`, um módulo para pegar informações especificas do sistema, por exemplo o tmpdir e ele se chama `os`, um outro para alocação de pedaços de binários na memória chamado `buffer`, varios módulos para análise de urls e caminhos (`url`, `querystring`, `path`) entre outros. A maioria dos módulos presentes no núcleo do node suportão
-os principais casos de uso dele: escrever rapidamente programas que conversem com os arquivos do sistema ou rede. 
+Em adição ao `fs` e os módulos de rede existem outros módulos no base do núcleo do node. Lá também temos um modulo assincrono para resolver consultas de DNS chamado `dns`, um módulo para pegar informações especificas do sistema, por exemplo o tmpdir e ele se chama `os`, um outro para alocação de pedaços de binários na memória chamado `buffer`, varios módulos para análise de urls e caminhos (`url`, `querystring`, `path`) entre outros. A maioria dos módulos presentes no núcleo do node suportão
+os principais casos de uso dele: escrever rapidamente programas que conversem com os sistema de arquivos ou rede. 
 
 Node lida com I/O com: callbacks, eventos, streams e módulos. Se você aprende como essas quatro coisas trabalham vocês esta habil para ir em quanlquer módulo do core do node a ter um entendimento básico sobre como a interface funciona com ele.
 
@@ -136,7 +134,7 @@ Callback são somente funções que são executadas de forma tardia. A chave par
 e use callbacks para declarar se uma depende da outra função para encerrar.
 
 O método `fs.readFile` é fornecido pelo node no módulo `fs`, é assincrono e acontece quando se tem um logo tempo para finalizar. Considerando o que ele faz: ele vai até o sistema operacional, que por sua vez esta rodando em um disco rígido isso pode ou não estar girando a milhares de rotações por minuto. Então ele tem que usar o lazer para ler os dados e enviar atráves das camadas de comunição do sistema de volta para o seu programa em javascript. Você da ao `fs.readFile` uma função
-(conhecida como callback) que sera chamada depois de recuperar os dados do arquivos do sistema. Ela coloca os dados recuperados em uma variavel do javascript e a sua função (callback) com essa variavél, neste caso a variavel se chama `fileContents` porque ela contem o conteudo do arquivo que foi lido. 
+(conhecida como callback) que sera chamada depois de recuperar os dados do sistema de arquivos. Ela coloca os dados recuperados em uma variavel do javascript e a sua função (callback) com essa variavél, neste caso a variavel se chama `fileContents` porque ela contem o conteudo do arquivo que foi lido. 
 
 Pense em um restaurante exemplo do tutorial lá do inicio. Em muitos restaurantes você pega um numero e coloca em sua mesa e espera por sua comida. Eles são como os callbacks. Isso deixa claro para o servidor a quem chamar quando o cheeseburger estiver pronto.
 
