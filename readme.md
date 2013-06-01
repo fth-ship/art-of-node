@@ -13,13 +13,13 @@ Esse pequeno livro é um trabalho em progresso, mas eu não tenho um trabalho ag
 
 ## Indice de conteúdo 
 
-- [Entendendo node](#understanding)
+- [Entendendo o node](#understanding)
 - [Modulos do núcleo](#core-modules)
 - [Callbacks](#callbacks)
-- [Events](#events) (não foi escrito ainda)
+- [Eventos](#events) (não foi escrito ainda)
 - [Streams](#streams) (não foi escrito ainda)
-- [Modulos e o NPM(Node Package Manager)](#modules) (não foi escrito ainda)
-- [Evoluindo de forma granular](#going-with-the-grain)
+- [Modulos e o NPM (Node Package Manager)](#modules) (não foi escrito ainda)
+- [Evoluíndo de forma granular](#going-with-the-grain)
 - [Apps em tempo-real](#realtime) (não foi escrito ainda)
 
 ## Entendendo o node 
@@ -70,9 +70,9 @@ outras pessoas porque o seu pedido tem que ser feito para o deu outra começar e
 
 Aqui tem uma lista de coisas divertidas que podem serem feitas com graças ao node por sua natureza não bloqueante:
   
-  - Controle [flying quadcopters](http://nodecopter.com)
+  - Controle [quadicopteros voadores](http://nodecopter.com)
   - Escrever bots par ao chat IRC
-  - Criar [walking biped robots](http://www.youtube.com/watch?v=jf-cEB3U2UQ)
+  - Criar [robôs bipedes que andam](http://www.youtube.com/watch?v=jf-cEB3U2UQ)
 
 ## Módulos do Núcleo 
 
@@ -171,7 +171,7 @@ Para quebrar esse exemplo em mais pedaços, aqui tem uma linha do tempo de event
 - 1: o código é analisado, isso significa que se existir algum erro de sintaxe o pragrama quebrara e sera apontado aonde isso aconteceu.
 - 2: `addOne` sera chamado, onde `logMyNumber` sera passado com uma função chamada `callback`, que é o que precisa ser chamado quando `addOne` estiver completa. Imediatamante disparando o método assincrono `fs.readFile`. Essa parte do programa leva um tempo para terminar.
 - 3: com nada para fazer, o node espera por um tempo até o `fs.readFile` encerrar a sua execução.
-- 4: `fs.readFile` termina e chama o callbacl, `doneReading`, que incrementa o numer e imediatamente essa função `addOne` passando (seu retorno), `logMyNumber`.
+- 4: `fs.readFile` termina e chama o callback, `doneReading`, que incrementa o numer e imediatamente essa função `addOne` passando (seu retorno), `logMyNumber`.
 
 Talves parte mais confusa de se programar com callbacks é como as funções são somente objetos armazenados em variaveis e passadas ao em torno do programa com diferentes nomes. Dando nomes simples e descritivos para suas variaveis faz seu código ser mais legivel para outros. Geralmente falando em programas no node onde você enxerga uma variavel como `callback` ou `cb` você assume ela como uma função. 
 
@@ -253,37 +253,37 @@ fs.readFile('movie.mp4', function finishedReading(error, movieData) {
 })
 ```
 
-## Events
+## Eventos 
 
-In node if you require the [events](http://nodejs.org/api/events.html) module you can use the so-called 'event emitter' that node itself uses for all of its APIs that emit things.
+No node se você requerir o módulo de [eventos](http://nodejs.org/api/events.html) você pode usar também chamando de 'emissor de evento' até mesmo o node use para todas as suas APIs para emitir coisas.
 
-Events are a common pattern in programming, known more widely as the ['observer pattern'](http://en.wikipedia.org/wiki/Observer_pattern) or 'pub/sub' (publish/subscribe). Whereas callbacks are a one-to-one relationship between the thing waiting for the callback and the thing calling the callback, events are the same exact pattern except with a many-to-many API.
+Eventos são padrões comuns de programação, para conhecer melhor procure por ['observer pattern'](http://en.wikipedia.org/wiki/Observer_pattern) ou 'pub/sub' (publicar/assinar). Ao passo que callbacks são uma relação um-para-um entre algo que espera pelo callback e outra a chamada do callback, eventos são o mesmo padrão com exceção de que eles são uma API de muitos-para-muitos.
 
-Here are few common use cases for using events instead of plain callbacks:
+Aqui temos casos comuns de uso dos eventos em de simples callbacks:
 
-- Chat room where you want to broadcast messages to many listeners
-- Game server that needs to know when new players connect, disconnect, move, shoot and jump
-- Database connector that might need to know when the database connection opens, closes or sends an error
+- Uma sala de chat onde você tem um canal de mensagens com muitos ouvintes.
+- Servidor de um jogo que necessita saber quando os players se ligam, desligam, movem-se, atiram ou pulam
+- Conectores de bancos de dados podem precisar saber onde suas conexões estão abertar, fechadas ou enviando um erro
 
-If we were trying to write a module that connects to a chat server using only callbacks it would look like this:
+Se você tentar escrever um servidor de chat que se conecte usando apenas callbacks ele ira parecer com isso:
 
 ```js
 var chatClient = require('my-chat-client')
 
 function onConnect() {
-  // have the UI show we are connected
+  // exibe a UI quando conectar-se
 }
 
 function onConnectionError(error) {
-  // show error to the user
+  // exibe erros para o usuario
 }
 
 function onDisconnect() {
- // tell user that they have been disconnected
+ // avisa ao usuario que ele foi desconectado
 }
 
 function onMessage(message) {
- // show the chat room message in the UI
+ // exibe a mensagem na UI da sala
 }
 
 chatClient.connect(
@@ -295,29 +295,30 @@ chatClient.connect(
 )
 ```
 
-As you can see this is really cumbersome because of all of the functions that you have to pass in a specific order to the `.connect` function. Writing this with events would look like this:
+Como você pode ver é realmente pesado escrever porque você tem que passar todas as funções em uma ordem especifica para a função `.connect`. Escrevendo isso com eventos ira f
+se parecer com isso:
 
 ```js
 var chatClient = require('my-chat-client').connect()
 
 chatClient.on('connect', function() {
-  // have the UI show we are connected
+  // exibe a UI quando conectar-se
 }) 
 
 chatClient.on('connectionError', function() {
-  // show error to the user
+  // exibe erros para o usuario
 })
 
 chatClient.on('disconnect', function() {
-  // tell user that they have been disconnected
+  // avisa ao usuario que ele foi desconectado
 })
 
 chatClient.on('message', function() {
-  // show the chat room message in the UI
+  // exibe a mensagem na UI da sala
 })
 ```
 
-This approach is similar to the pure-callback approach but introduces the `.on` method, which subscribes a callback to an event. This means you can choose which events you want to subscribe to from the `chatClient`. You can also subscribe to the same event multiple times with different callbacks:
+Esta abordagem é bastante similar a utilização com callbacks-puros mas essa abordagem introduz o método `.on`, onde é atralado um callback ao evento. Isso significa que você escolhe o que tem que estar assinado para `chatClient`. Você é capaz de assinar o mesmo evento varias vezes com diferentes callbacks:
 
 ```js
 var chatClient = require('my-chat-client').connect()
@@ -337,76 +338,81 @@ MORE EVENTS CONTENT TODO
 
 ## Streams
 
-Early on in the project the file system and network APIs had their own separate patterns for dealing with streaming I/O. For example, files in a file system have things called 'file descriptors' so the `fs` module had to have extra logic to keep track of these things whereas the network modules didn't have such a concept. Despite minor differences in semantics like these, at a fundamental level both groups of code were duplicating a lot of functionality when it came to reading data in and out. The team working on node realized that it would be confusing to have to learn two sets of semantics to essentially do the same thing so they made a new API called the `Stream` and made all the network and file system code use it. 
+Logo no início do projet, as APIs de sistema de arquivos e redes teve seus próprios padrões de separação para lidar com I/O de streaming. Por exemplo, arquivos em um sistema de arquivos tem propriedades que se chamam 'descritores do arquivo' então o módulo `fs` teve uma lógica adicional enquanto o módulo de rede não teve esse conceito adicionado. Apesar de diferenças menores na semâtica como estas, em um nivel fundamental os grupos de código tem uma grande quantidade de
+funcionalidades duplicadas onde fazem a leitura de dados na entrada e saida. O time que esta trabalhando no node percebeu que seria confuso ter que aprender dois conjuntos de semântica, essencialmente, fazendo a mesma coisa, contanto que fizeram uma nova API chamada `Stream` e tudo o que demanda rede e sistema de arquivos usa ela como base.
 
-The whole point of node is to make it easy to deal with file systems and networks so it made sense to have one pattern that was used everywhere. The good news is that most of the patterns like these (there are only a few anyway) have been figured out at this point and it is very unlikely that node will change that much in the future.
+Toda a questão que o node lida é facilitar a comunicaçãoo com o sistema de arquivos e redes através de um padrão que é utilizado em todos os lugares. A boa notícia é que a maioria dos padrões como esse (há apenas alguns de qualquer maneira) foram descobertos até este ponto e teram poucas mudanças mesmo que quase improvavel que isso aconteça. 
 
-THE REST IS TODO, in the meantime read the [streams handbook](https://github.com/substack/stream-handbook#introduction)
+O RESTANTE ESTÁ EM ANDAMENTO, neste meio tempo leia o [streams handbook](https://github.com/substack/stream-handbook#introduction)
 
-## Modules
+## Módulos 
 
 TODO
 
-## Going with the grain
+## Evoluindo de módo granular 
 
-Like any good tool, node is best suited for a certain set of use cases. For example: Rails, the popular web framework, is great for modeling complex [business logic](http://en.wikipedia.org/wiki/Business_logic), e.g. using code to represent real life business objects like accounts, loan, itineraries, and inventories. While it is technically possible to do the same type of thing using node, there would be definite drawbacks since node is designed for solving I/O problems and it doesn't know much about 'business logic'. Each tool focuses on different problems. Hopefully this guide will help you gain an intuitive understanding of the strengths of node so that you know when it can be useful to you.
+Como todo boa ferramenta, o node é bem adequado para certos casos de uso. Por exemplo: Rails, o popular web framework, é ótimo para modelar complexas [lógicas de negócio](http://en.wikipedia.org/wiki/Business_logic), e.g usando código para representar a vida em um plano objetivado que vivemos físicamente como contas, empréstimos, itinerários e inventários. Embora tecnicamente seja possivel fazer o memso utilizando o node, haveria desvantagens claras sabendo que o node é projetado
+para resolver problemas de I/O e não sei sobre a pate da 'lógica de negócio'. Cada ferramente tem seu foco voltado a diferentes problemas. Esperamos que este guia ajude-o a ganhar uma compreensão intuitiva dos pontos fortes do node e você sabera quando ele sera util.
 
-### What is outside of node's scope?
+### O que esta fora do escopo do node?
 
-Fundamentally node is just a tool used for managing I/O across file systems and networks, and it leaves other more fancy functionality up to third party modules. Here are some things that are outside the scope of node:
+Fundamentalmente o node é somente usado como ferramenta para gerenciar I/O ao redor do sitema de arquivos e redes e ele deixa outras funcionalidades mais bonitas com módulos de terceiros. Aqui são algumas das coisas fora do escopo do node:
 
 #### Web frameworks
 
-There are a number of web frameworks built on top of node (framework meaning a bundle of solutions that attempts to address some high level problem like modeling business logic), but node is not a web framework. Web frameworks that are written using node don't always make the same kind of decisions about adding complexity, abstractions and tradeoffs that node does and may have other priorities.
+Existem uma boa quantidade de web frameworks construidos em cima do node (framework é um pacote de tentativas de se resolver um problema de alto nível problemas similares ao de modelar lógica de negócio), mas o node não é um framework para web. Web frameworks são escritos para serem utilizado no node e nem sempre tomam o mesmo tipo de decisões sobre a adição de complexidade, abstração e compreensão que o node faz e pode ter outras prioridades. 
 
-#### Language syntax
+#### Sintaxe da linguagem 
 
-Node uses JavaScript and doesn't change anything about it. Felix Geisendörfer has a pretty good write-up of the 'node style' [here](https://github.com/felixge/node-style-guide).
+O node usa JavaScript e não muda nada sobre isso. Felix Geisendörfer tem uma belo conteúdo escrito sobre o 'estilo de escrita do node' [aqui](https://github.com/felixge/node-style-guide).
 
-#### Language abstraction
+#### Abstração da linguagem 
 
-When possible node will use the simplest possible way of accomplishing something. The 'fancier' you make your JavaScript the more complexity and tradeoffs you introduce. Programming is hard, especially in JS where there are 1000 solutions to every problem! It is for this reason that node tries to always pick the simplest, most universal option. If you are solving a problem that calls for a complex solution and you are unsatisfied with the 'vanilla JS solutions' that node implements, you are free to solve it inside your app or module using whichever abstractions you prefer.
+Quando possivel o node vai usar a maneira mais simples de escrever algo. Mais 'bonito' faz do seu JavaScript mais complexo e compromissado com vantagens e desvantagens.
+Programar é difícil, especialmente em JS onde você tem 1000 soluções para o mesmo problema! Essa é a principal razão para o node optar pela simplicidade sempre que possivel,
+mas que pode ser uma opção universal. Se você esta resolvendo um problema complexo e você esta insatisfeito com o modo que o node implementa as coisas com 'soluções de JS com gosto de baunilha' sinta-se livre para resolver isso dentro do seu app ou módulo usando qualquer abstrações que você preferir.
 
-A great example of this is node's use of callbacks. Early on node experimented with a feature called 'promises' that added a number of features to make async code appear more linear. It was taken out of node core for a few reasons:
+Um grande exemplo de como o node usa os callbacks. Logo no inicio foi experimentado a caracteristica chamada 'promessas' que adiciona algumas funcionalidades para fazer o código assincrono parecer mais linear. Ele foi levado para o fora do núcleo do node por algumas razões:
 
 - they are more complex than callbacks
-- they can be implemented in userland (distributed on npm as third party modules)
+- eles são mais complexos que callbacks
+- ele podem ser implementados na userland (distriuído no npm como módulo de terceiros)
 
-Consider one of the most universal and basic things that node does: reading a file. When you read a file you want to know when errors happen, like when your hard drive dies in the middle of your read. If node had promises everyone would have to branch their code like this:
+Considerando uma da mais universal e básica ideia que o node faz: ler um arquivo. Onde você le um arquivo e precisa saber onde os erros acontecem, como exemplo quando o disco rigido morre no meio da sua leitura. Se você tem promessas tudo que você tera é um código como esse:
 
 ```js
 fs.readFile('movie.mp4')
   .then(function(data) {
-    // do stuff with data
+    // faça algo com os dados 
   })
   .error(function(error) {
-    // handle error
+    // lide com o erro 
   })
 ```
 
-This adds complexity, and not everyone wants that. Instead of two separate functions node just uses a single callback function. Here are the rules:
+Isso adiciona uma complexidade, desnecessaria. No lugar de duas funções separadas o node somente usa uma unica função de callback. Aqui temos as régras:
 
-- When there is no error pass null as the first argument
-- When there is an error, pass it as the first argument
-- The rest of the arguments can be used for anything (usually data or responses since most stuff in node is reading or writing things)
+- Quando não existir erros passe null como primeiro argumento
+- Quando o existir erro, passar ele como primeiro argumento
+- O restante dos argumentos são usados para qualquer coisa (usualmente dados ou respostas já que na maior parte do tempo o node esta lendo ou escrevendo coisas)
 
-Hence, the node callback style:
+Por isso, o node usa o estilo de callback:
 
 ```js
 fs.readFile('movie.mp4', function(err, data) {
-  // handle error, do stuff with data
+  // lide com o erro, e faça algo com os dados 
 })
 ```
 
-#### Threads/fibers/non-event-based concurrency solutions
+#### Soluções baseadas em Threads/fibers/non-event
 
-Note: If you don't know what these things mean then you will likely have an easier time learning node, since unlearning things is just as much work as learning things.
+Nota: Se você não sabe o que isso tudo significa você tera uma facilidade maior em com tempo para aprender como o node funciona, visto que desaprender coisas leva o mesmo tempo que aprender. 
 
-Node uses threads internally to make things fast but doesn't expose them to the user. If you are a technical user wondering why node is designed this way then you should 100% read about [the design of libuv](http://nikhilm.github.com/uvbook/), the C++ I/O layer that node is built on top of.
+O node usa threads internamente para fazer coisas de uma forma rápida mas não expõe isso ao usuário. Se você é um usuário técnico e esta perguntando-se o porque ele é projetado desta maneira esta leitura é 100% sobre [A projeção da libuv](http://nikhilm.github.com/uvbook/), que onde a camada de I/O feita em C++ e pela qual o node é concebido.
 
-## Real-time apps
+## Apps em tempo-real 
 
-TODO - this section will have a non-contrived, functioning application with a web UI whose architecture will be dissected and discussed.
+TODO - esta sessão tera um aplicativo funcional com uma web UI cuja a sua arquitetura será esfacelada e discutida.
 
 ## License
 
