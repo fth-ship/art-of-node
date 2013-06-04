@@ -328,7 +328,7 @@ funcionalidades duplicadas onde fazem a leitura de dados na entrada e saida. O t
 
 Toda a questão que o node lida é facilitar a comunicaçãoo com o sistema de arquivos e redes através de um padrão que é utilizado em todos os lugares. A boa notícia é que a maioria dos padrões como esse (há apenas alguns) foram descobertos até este ponto e terão poucas mudanças mesmo que seja quase improvavel que isso aconteça. 
 
-O RESTANTE ESTÁ EM ANDAMENTO, neste meio tempo leia o [streams handbook](https://github.com/substack/stream-handbook#introduction)
+O RESTANTE ESTÁ EM ANDAMENTO, neste meio tempo leia o [streams handbook](https://github.com/fth-ship/stream-handbook)
 
 ## Módulos 
 
