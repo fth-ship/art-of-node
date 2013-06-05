@@ -119,7 +119,7 @@ Porque é que temos `undefined` quando pedimos para mostrar o numero dessa vez? 
 
 Onde você executa um programa onde as funções são imediatamente definidas, mas não executa elas imediatamente. Este é um conceito fundamental para entender sobre a programação assincrona. Onde `addOne` é chamada fora de `fs.readFile` e move-se para a proxima tarefa pronta para ser executada e não esperar o disco responder igual a `fs.readFile`. Se não tem nada para executar o node espera por pendências de operações fs/network terminarem ou pararem de executar saindo da linha de comando.
 
-Onde `fs.readFile` esta completa para ler o arquivo (talves isso demore millisegundos ou segundos e até mesmo minutos dependendo de quanto o disco é rápipdo) executando a função `doneReading` e dando um erro (claro que se algum tipo de erro acontecer) e o conteúdo do arquivo.
+Onde `fs.readFile` esta completa para ler o arquivo (talvez isso demore millisegundos ou segundos e até mesmo minutos dependendo de quanto o disco é rápipdo) executando a função `doneReading` e dando um erro (claro que se algum tipo de erro acontecer) e o conteúdo do arquivo.
 
 A razão pela qual `undefined` foi mostrado no código acima é que ele é chamado dentro de `console.log` e fora de `fs.readFile` mostrando o valor anterior de myNumber e não o conteúdo do arquivo.
 
@@ -163,9 +163,9 @@ Para quebrar esse exemplo em mais pedaços, aqui tem uma linha do tempo de event
 - 3: com nada para fazer, o node espera por um tempo até o `fs.readFile` encerrar a sua execução.
 - 4: `fs.readFile` termina e chama o callback, `doneReading`, que incrementa o numero e imediatamente chama a função `logMyNumber` contida na variável `callback`.
 
-Talves a parte mais confusa de se programar com callbacks é que as funções são somente objetos armazenados em variáveis e passadas em todo o programa com diferentes nomes. Dando nomes simples e descritivos para suas variáveis faz seu código ser mais legível para outros. Geralmente falando em programas no node onde você enxerga uma variável como `callback` ou `cb` você assume ela como uma função. 
+talvez a parte mais confusa de se programar com callbacks é que as funções são somente objetos armazenados em variáveis e passadas em todo o programa com diferentes nomes. Dando nomes simples e descritivos para suas variáveis faz seu código ser mais legível para outros. Geralmente falando em programas no node onde você enxerga uma variável como `callback` ou `cb` você assume ela como uma função. 
 
-Você talves tenha escutado alguns termos como `programação evencionada` ou `ciclo de eventos`. Onde é referenciado da mesma maneira que `fs.readFile` foi implementada. Node primeiramente despacha a operação `fs.readFile` e espera por `fs.readFile` enviar um evento para concluir. Equanto a resposta é esperada o node vai buscando checar outras coisas. Dentro do node há uma lista de coisas a serem feitas mas não informaram ainda, então o ciclo do node acaba e retorna para a lista várias vezes checando se o que estava sendo processado terminou. Depois do termino ele pega o que foi 'processado', ex. callbacks que dependem desse termino são chamados. 
+Você talvez tenha escutado alguns termos como `programação evencionada` ou `ciclo de eventos`. Onde é referenciado da mesma maneira que `fs.readFile` foi implementada. Node primeiramente despacha a operação `fs.readFile` e espera por `fs.readFile` enviar um evento para concluir. Equanto a resposta é esperada o node vai buscando checar outras coisas. Dentro do node há uma lista de coisas a serem feitas mas não informaram ainda, então o ciclo do node acaba e retorna para a lista várias vezes checando se o que estava sendo processado terminou. Depois do termino ele pega o que foi 'processado', ex. callbacks que dependem desse termino são chamados. 
 
 Aquie temos uma versão de um pseudocódigo do exemplo acima:
 
