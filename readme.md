@@ -163,7 +163,7 @@ Para quebrar esse exemplo em mais pedaços, aqui tem uma linha do tempo de event
 - 3: com nada para fazer, o node espera por um tempo até o `fs.readFile` encerrar a sua execução.
 - 4: `fs.readFile` termina e chama o callback, `doneReading`, que incrementa o numero e imediatamente chama a função `logMyNumber` contida na variável `callback`.
 
-talvez a parte mais confusa de se programar com callbacks é que as funções são somente objetos armazenados em variáveis e passadas em todo o programa com diferentes nomes. Dando nomes simples e descritivos para suas variáveis faz seu código ser mais legível para outros. Geralmente falando em programas no node onde você enxerga uma variável como `callback` ou `cb` você assume ela como uma função. 
+Talvez a parte mais confusa de se programar com callbacks é que as funções são somente objetos armazenados em variáveis e passadas em todo o programa com diferentes nomes. Dando nomes simples e descritivos para suas variáveis faz seu código ser mais legível para outros. Geralmente falando em programas no node onde você enxerga uma variável como `callback` ou `cb` você assume ela como uma função. 
 
 Você talvez tenha escutado alguns termos como `programação evencionada` ou `ciclo de eventos`. Onde é referenciado da mesma maneira que `fs.readFile` foi implementada. Node primeiramente despacha a operação `fs.readFile` e espera por `fs.readFile` enviar um evento para concluir. Equanto a resposta é esperada o node vai buscando checar outras coisas. Dentro do node há uma lista de coisas a serem feitas mas não informaram ainda, então o ciclo do node acaba e retorna para a lista várias vezes checando se o que estava sendo processado terminou. Depois do termino ele pega o que foi 'processado', ex. callbacks que dependem desse termino são chamados. 
 
@@ -178,7 +178,7 @@ function addOne(thenRunThisFunction) {
 
 addOne(function thisGetsRunAfterAddOneFinishes() {})
 ```
-Imagine que tenha 3 funções assincronas `a`, `b` e `c`. Para cada uma leva-se 1 minuto de execução e depois de terminado elas chamam um callback (que é passado como primeiro argumento). Se você tem que falar para o node 'comece executando a, depois b depois que a terminar, e executar c então b termina' isso passa a ser:
+Imagine que tenha 3 funções assíncronas `a`, `b` e `c`. Para cada uma leva-se 1 minuto de execução e depois de terminado elas chamam um callback (que é passado como primeiro argumento). Se você tem que falar para o node 'comece executando a, depois b depois que a terminar, e executar c então b termina' isso passa a ser:
 
 ```js
 a(function() {
@@ -354,7 +354,7 @@ O node usa JavaScript e não muda nada sobre isso. Felix Geisendörfer tem uma b
 
 Quando possivel o node vai usar a maneira mais simples de escrever algo. Código mais 'bonito' faz do seu JavaScript mais complexo e compromissado com vantagens e desvantagens. Programar é difícil, especialmente em JS onde você tem 1000 soluções para o mesmo problema! Essa é a principal razão para o node optar pela simplicidade sempre que possivel e que pode ser uma opção universal. Se você esta resolvendo um problema complexo e você esta insatisfeito com o modo que o node implementa as coisas com 'soluções de JS com gosto de baunilha' sinta-se livre para resolver isso dentro do seu app ou módulo usando qualquer abstrações que você preferir.
 
-Um grande exemplo de como o node usa os callbacks. Logo no inicio foi experimentado a caracteristica chamada 'promessas' que adiciona algumas funcionalidades para fazer o código assincrono parecer mais linear. Ele foi levado para o fora do núcleo do node por algumas razões:
+Um grande exemplo de como o node usa os callbacks. Logo no inicio foi experimentado a caracteristica chamada 'promessas' que adiciona algumas funcionalidades para fazer o código assincrono parecer mais linear. Ele foi levado para fora do núcleo do node por algumas razões:
 
 - eles são mais complexos que callbacks
 - ele podem ser implementados na userland (distriuído no npm como módulo de terceiros)
@@ -371,7 +371,7 @@ fs.readFile('movie.mp4')
   })
 ```
 
-Isso adiciona uma complexidade, desnecessária. No lugar de duas funções separadas o node somente usa uma única função de callback. Aqui temos as régras:
+Isso adiciona uma complexidade, desnecessária. No lugar de duas funções separadas o node usa somente uma única função de callback. Aqui temos as regras:
 
 - Quando não existir erros passe null como primeiro argumento
 - Quando o existir erro, passar ele como primeiro argumento
